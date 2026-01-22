@@ -5,49 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Veleria - Kirish</title>
     <link rel="stylesheet" href="index.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="circles">
-        <div class="circle1"></div>
-        <div class="circle2"></div>
-    </div>
-
     <div class="container">
-        <div class="glass-card" id="auth-card">
+        <div class="glass-card">
             <h1 class="logo">Veleria</h1>
-            
-            <div id="login-form">
-                <h3>Kirish</h3>
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-password" placeholder="Parol" required>
-                <button id="login-btn" class="main-btn">Tizimga kirish</button>
-                <p class="toggle-text">Akkauntingiz yo'qmi? <span onclick="toggleAuth()">Ro'yxatdan o'tish</span></p>
-            </div>
-
-            <div id="register-form" style="display: none;">
-                <h3>Ro'yxatdan o'tish</h3>
-                <input type="email" id="reg-email" placeholder="Email manzilingiz" required>
-                <input type="password" id="reg-password" placeholder="Parol yarating" required>
-                <button id="reg-btn" class="main-btn">Hisob yaratish</button>
-                <p class="toggle-text">Akkauntingiz bormi? <span onclick="toggleAuth()">Kirish</span></p>
+            <div id="auth-box">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Parol" required>
+                <button id="action-btn">Ro'yxatdan o'tish</button>
+                <p id="toggle-text">Akkauntingiz bormi? <span>Kirish</span></p>
             </div>
         </div>
     </div>
-
     <script type="module" src="index.js"></script>
-    <script>
-        function toggleAuth() {
-            const login = document.getElementById('login-form');
-            const reg = document.getElementById('register-form');
-            if (login.style.display === 'none') {
-                login.style.display = 'block';
-                reg.style.display = 'none';
-            } else {
-                login.style.display = 'none';
-                reg.style.display = 'block';
-            }
-        }
-    </script>
 </body>
 </html>

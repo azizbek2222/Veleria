@@ -1,9 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { 
-    getAuth, 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword 
-} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyApRt8MNq4YvsjxQVhyQK3p5km8G7Hi9iE",
@@ -17,30 +13,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Ro'yxatdan o'tish
-document.getElementById('reg-btn').addEventListener('click', () => {
-    const email = document.getElementById('reg-email').value;
-    const pass = document.getElementById('reg-password').value;
+const emailInput = document.getElementById('email');
+const passInput = document.getElementById('password');
+const btn = document.getElementById('action-btn');
+const toggleBtn = document.getElementById('toggle-text');
 
-    createUserWithEmailAndPassword(auth, email, pass)
-        .then((userCredential) => {
-            window.location.href = "name.html";
-        })
-        .catch((error) => {
-            alert("Xatolik: " + error.message);
-        });
-});
+let isLogin = false;
 
-// Kirish
-document.getElementById('login-btn').addEventListener('click', () => {
-    const email = document.getElementById('login-email').value;
-    const pass = document.getElementById('login-password').value;
+toggleBtn.onclick = () => {
+    isLogin = !isLogin;
+    btn.innerText = isLogin ? "Kirish" : "Ro'yxatdan o'tish";
+    toggleBtn.innerHTML = isLogin ? "Akkauntingiz yo'qmi? <span>Yaratish</span>" : "Akkauntingiz bormi? <span>Kirish</span>";
+};
 
-    signInWithEmailAndPassword(auth, email, pass)
-        .then((userCredential) => {
-            window.location.href = "home.html";
-        })
-        .catch((error) => {
-            alert("Email yoki parol noto'g'ri!");
-        });
-});
+btn.onclick = () => {
+    const email = emailInput.value;
+    const pass = passInput.value;
+
+    if (isLogin) {
+        signInWithEmailAndPassword(auth, email, pass)
+            .then(() => window.location.href = "home.html")
+            .catch(err => alert("Xato: " + err.message));
+    } else {
+        createUserWithEmailAndPassword(auth, email, pass)
+            .then(() => window.location.href = "name.html")
+            .catch(err => alert("Xato: " + err.message));
+    }
+};
