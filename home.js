@@ -1,4 +1,4 @@
-// 1. Firebase Konfiguratsiyasi
+// 1. Firebase Konfiguratsiyasi (Faqat bitta joyda bo'lishi kerak)
 const firebaseConfig = {
   apiKey: "AIzaSyApRt8MNq4YvsjxQVhyQK3p5km8G7Hi9iE",
   authDomain: "webtelegram-9a1d6.firebaseapp.com",
@@ -35,28 +35,46 @@ overlay.onclick = () => {
     overlay.style.display = 'none';
 };
 
-// 4. Foydalanuvchi holatini tekshirish va ma'lumotlarni yuklash
+// 4. Foydalanuvchi ma'lumotlarini (Rasm, Ism, Username) Real-time yuklash
 auth.onAuthStateChanged((user) => {
     if (user) {
-        database.ref('users/' + user.uid).once('value').then((snapshot) => {
+        // '.on' ishlatdik - profil o'zgarsa, home sahifasini yangilamasdan rasm o'zgaradi
+        database.ref('users/' + user.uid).on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // Sidebar ma'lumotlarini yangilash
-                document.getElementById('user-display-name').innerText = data.firstname + " " + data.lastname;
+                // Ism va Username
+                document.getElementById('user-display-name').innerText = data.firstname + " " + (data.lastname || "");
                 document.getElementById('user-display-username').innerText = "@" + data.username;
                 
-                const avatar = document.getElementById('user-avatar');
-                if(avatar) avatar.innerText = data.firstname.charAt(0).toUpperCase();
+                const avatarCont = document.getElementById('user-avatar-container');
+                const avatarLetter = document.getElementById('user-avatar-letter');
+
+                // RASMNI TEKSHIRISH
+                if (data.profilePic && data.profilePic !== "") {
+                    // Agar rasm bazada bo'lsa
+                    avatarCont.style.backgroundImage = `url(${data.profilePic})`;
+                    avatarCont.style.backgroundSize = "cover";
+                    avatarCont.style.backgroundPosition = "center";
+                    if(avatarLetter) avatarLetter.style.display = 'none'; // Harfni yashirish
+                } else {
+                    // Agar rasm bo'lmasa, harfni ko'rsatish
+                    avatarCont.style.backgroundImage = 'none';
+                    if(avatarLetter) {
+                        avatarLetter.style.display = 'block';
+                        avatarLetter.innerText = data.firstname.charAt(0).toUpperCase();
+                    }
+                }
             }
         });
     } else {
+        // Foydalanuvchi kirmagan bo'lsa
         window.location.href = "index.html";
     }
 });
 
 // 5. Menyu tugmalari (Yo'naltirishlar)
 
-// Profil tugmasi (sidebar ichidagi 1-chi menyu elementi)
+// Profil sahifasiga (Sidebar 1-chi element)
 const profileBtn = document.querySelector('.menu-item:nth-child(1)');
 if (profileBtn) {
     profileBtn.onclick = () => {
@@ -64,7 +82,7 @@ if (profileBtn) {
     };
 }
 
-// Sozlamalar tugmasi (sidebar ichidagi 2-chi menyu elementi)
+// Sozlamalar sahifasiga (Sidebar 2-chi element)
 const settingsBtn = document.querySelector('.menu-item:nth-child(2)');
 if (settingsBtn) {
     settingsBtn.onclick = () => {
@@ -72,7 +90,7 @@ if (settingsBtn) {
     };
 }
 
-// 6. Chat jildlari (Tablar) animatsiyasi
+// 6. Chat jildlari (Tablar) orasida almashish
 tabs.forEach(tab => {
     tab.onclick = () => {
         tabs.forEach(t => t.classList.remove('active'));
