@@ -6,24 +6,24 @@
 }
 
 body {
-    background: #0f0c29;
+    background: #090a20;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Skrol bo'lmasligi uchun */
+    overflow: hidden;
 }
 
 .container {
     width: 90%;
-    max-width: 380px;
+    max-width: 350px;
 }
 
 .glass-card {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 20px;
     padding: 30px;
+    border-radius: 20px;
     text-align: center;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -32,12 +32,13 @@ body {
 .logo {
     letter-spacing: 5px;
     margin-bottom: 20px;
+    font-weight: 300;
 }
 
 input {
     width: 100%;
     padding: 12px;
-    margin: 8px 0;
+    margin: 10px 0;
     border-radius: 10px;
     border: none;
     background: rgba(255, 255, 255, 0.2);
@@ -48,11 +49,11 @@ input {
 button {
     width: 100%;
     padding: 12px;
-    margin-top: 15px;
+    margin-top: 10px;
     border-radius: 10px;
     border: none;
-    background: white;
-    color: #0f0c29;
+    background: #4facfe;
+    color: white;
     font-weight: bold;
     cursor: pointer;
 }
@@ -60,5 +61,11 @@ button {
 #toggle-text {
     margin-top: 15px;
     font-size: 0.8rem;
+    color: #ccc;
+}
+
+#toggle-link {
+    color: #00f2fe;
     cursor: pointer;
+    font-weight: bold;
 }

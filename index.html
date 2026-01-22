@@ -4,20 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Veleria - Kirish</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+
     <div class="container">
         <div class="glass-card">
             <h1 class="logo">Veleria</h1>
-            <div id="auth-box">
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Parol" required>
-                <button id="action-btn">Ro'yxatdan o'tish</button>
-                <p id="toggle-text">Akkauntingiz bormi? <span>Kirish</span></p>
-            </div>
+            
+            <input type="email" id="email" placeholder="Email manzilingiz">
+            <input type="password" id="password" placeholder="Parol">
+            
+            <button id="main-btn">Ro'yxatdan o'tish</button>
+            <p id="toggle-text">Akkauntingiz bormi? <span id="toggle-link">Kirish</span></p>
         </div>
     </div>
-    <script type="module" src="index.js"></script>
+
+    <script src="index.js"></script>
 </body>
 </html>

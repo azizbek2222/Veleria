@@ -1,6 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-
+// Firebase-ni sozlash
 const firebaseConfig = {
   apiKey: "AIzaSyApRt8MNq4YvsjxQVhyQK3p5km8G7Hi9iE",
   authDomain: "webtelegram-9a1d6.firebaseapp.com",
@@ -10,33 +8,61 @@ const firebaseConfig = {
   appId: "1:991268167197:web:fa77f263a3d3a66600b0f4"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+// Firebase-ni ishga tushirish
+firebase.initializeApp(firebaseConfig);
 
+const auth = firebase.auth();
+
+// Elementlarni olish
 const emailInput = document.getElementById('email');
 const passInput = document.getElementById('password');
-const btn = document.getElementById('action-btn');
-const toggleBtn = document.getElementById('toggle-text');
+const mainBtn = document.getElementById('main-btn');
+const toggleLink = document.getElementById('toggle-link');
+const toggleText = document.getElementById('toggle-text');
 
-let isLogin = false;
+let isLoginMode = false;
 
-toggleBtn.onclick = () => {
-    isLogin = !isLogin;
-    btn.innerText = isLogin ? "Kirish" : "Ro'yxatdan o'tish";
-    toggleBtn.innerHTML = isLogin ? "Akkauntingiz yo'qmi? <span>Yaratish</span>" : "Akkauntingiz bormi? <span>Kirish</span>";
+// Sahifani almashtirish (Kirish / Ro'yxatdan o'tish)
+toggleLink.onclick = function() {
+    isLoginMode = !isLoginMode;
+    if (isLoginMode) {
+        mainBtn.innerText = "Tizimga kirish";
+        toggleText.innerHTML = "Akkauntingiz yo'qmi? <span id='toggle-link'>Yaratish</span>";
+    } else {
+        mainBtn.innerText = "Ro'yxatdan o'tish";
+        toggleText.innerHTML = "Akkauntingiz bormi? <span id='toggle-link'>Kirish</span>";
+    }
+    // Qayta bog'lash (chunki span o'zgardi)
+    document.getElementById('toggle-link').onclick = toggleLink.onclick;
 };
 
-btn.onclick = () => {
+// Tugma bosilganda
+mainBtn.onclick = function() {
     const email = emailInput.value;
     const pass = passInput.value;
 
-    if (isLogin) {
-        signInWithEmailAndPassword(auth, email, pass)
-            .then(() => window.location.href = "home.html")
-            .catch(err => alert("Xato: " + err.message));
+    if (email === "" || pass === "") {
+        alert("Iltimos, hamma joyni to'ldiring!");
+        return;
+    }
+
+    if (isLoginMode) {
+        // Kirish
+        auth.signInWithEmailAndPassword(email, pass)
+            .then(() => {
+                window.location.href = "home.html";
+            })
+            .catch((error) => {
+                alert("Xato: " + error.message);
+            });
     } else {
-        createUserWithEmailAndPassword(auth, email, pass)
-            .then(() => window.location.href = "name.html")
-            .catch(err => alert("Xato: " + err.message));
+        // Ro'yxatdan o'tish
+        auth.createUserWithEmailAndPassword(email, pass)
+            .then(() => {
+                window.location.href = "name.html";
+            })
+            .catch((error) => {
+                alert("Xato: " + error.message);
+            });
     }
 };
