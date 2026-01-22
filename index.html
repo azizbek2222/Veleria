@@ -2,155 +2,52 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Veleria - Kirish</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #0f0c29;
-            background: linear-gradient(135deg, #24243e, #302b63, #0f0c29);
-            color: white;
-            overflow: hidden;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 400px;
-            transition: 0.5s ease;
-        }
-
-        .logo {
-            font-size: 3rem;
-            font-weight: 200;
-            letter-spacing: 10px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .input-field:focus {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 15px;
-            background: #fff;
-            color: #302b63;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            background: #f1f1f1;
-        }
-
-        .btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        #recaptcha-container {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Animatsiya */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .glass-card {
-            animation: fadeIn 0.8s ease-out;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="circles">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+    </div>
 
-    <div class="glass-card">
-        <h1 class="logo">Veleria</h1>
-        
-        <div id="phone-section">
-            <p class="subtitle">Telefon raqamingizni kiriting</p>
-            <div class="input-group">
-                <input type="text" id="phone-number" class="input-field" placeholder="+998 90 123 45 67">
+    <div class="container">
+        <div class="glass-card" id="auth-card">
+            <h1 class="logo">Veleria</h1>
+            
+            <div id="login-form">
+                <h3>Kirish</h3>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Parol" required>
+                <button id="login-btn" class="main-btn">Tizimga kirish</button>
+                <p class="toggle-text">Akkauntingiz yo'qmi? <span onclick="toggleAuth()">Ro'yxatdan o'tish</span></p>
             </div>
-            <div id="recaptcha-container"></div>
-            <button id="send-code-btn" class="btn">
-                <i class="fas fa-paper-plane"></i> SMS yuborish
-            </button>
-        </div>
 
-        <div id="code-section" class="hidden">
-            <p class="subtitle">SMS orqali kelgan kodni kiriting</p>
-            <div class="input-group">
-                <input type="text" id="verification-code" class="input-field" placeholder="6 xonali kod">
+            <div id="register-form" style="display: none;">
+                <h3>Ro'yxatdan o'tish</h3>
+                <input type="email" id="reg-email" placeholder="Email manzilingiz" required>
+                <input type="password" id="reg-password" placeholder="Parol yarating" required>
+                <button id="reg-btn" class="main-btn">Hisob yaratish</button>
+                <p class="toggle-text">Akkauntingiz bormi? <span onclick="toggleAuth()">Kirish</span></p>
             </div>
-            <button id="verify-code-btn" class="btn" style="background: #764ba2; color: white;">
-                <i class="fas fa-check-circle"></i> Tasdiqlash
-            </button>
         </div>
     </div>
 
     <script type="module" src="index.js"></script>
+    <script>
+        function toggleAuth() {
+            const login = document.getElementById('login-form');
+            const reg = document.getElementById('register-form');
+            if (login.style.display === 'none') {
+                login.style.display = 'block';
+                reg.style.display = 'none';
+            } else {
+                login.style.display = 'none';
+                reg.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
