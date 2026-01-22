@@ -1,6 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { 
+    getAuth, 
+    GoogleAuthProvider, 
+    signInWithPopup, 
+    onAuthStateChanged 
+} from "firebase/auth";
 
+// Firebase sozlamalari
 const firebaseConfig = {
   apiKey: "AIzaSyApRt8MNq4YvsjxQVhyQK3p5km8G7Hi9iE",
   authDomain: "webtelegram-9a1d6.firebaseapp.com",
@@ -12,23 +18,48 @@ const firebaseConfig = {
   measurementId: "G-7F5X24BNQ3"
 };
 
-// Initialize Firebase
+// Firebase-ni ishga tushirish
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// Google tugmasini tanlab olish
 const loginBtn = document.getElementById('google-login-btn');
 
-loginBtn.addEventListener('click', () => {
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            // Login muvaffaqiyatli
-            console.log("Kirildi:", result.user);
-            // Keyingi sahifaga o'tish
-            window.location.href = "name.html";
-        })
-        .catch((error) => {
-            console.error("Xatolik:", error.message);
-            alert("Kirishda xatolik yuz berdi!");
-        });
+// 1. Foydalanuvchi holatini kuzatish
+// Agar foydalanuvchi allaqachon tizimga kirgan bo'lsa, uni avtomatik o'tkazib yuboradi
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log("Foydalanuvchi tizimda:", user.displayName);
+        window.location.href = "name.html";
+    }
+});
+
+// 2. Kirish funksiyasi
+loginBtn.addEventListener('click', async () => {
+    try {
+        loginBtn.innerText = "Yuklanmoqda...";
+        loginBtn.disabled = true;
+
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        console.log("Muvaffaqiyatli kirildi:", user.displayName);
+        window.location.href = "name.html";
+
+    } catch (error) {
+        console.error("Xatolik yuz berdi:", error.code, error.message);
+        
+        // Xatolik xabarlarini tushunarli qilish
+        if (error.code === 'auth/popup-blocked') {
+            alert("Brauzeringiz oyna ochilishini blokladi. Iltimos, ruxsat bering.");
+        } else if (error.code === 'auth/unauthorized-domain') {
+            alert("Ushbu domen (vercel.app) Firebase-da ruxsat etilmagan!");
+        } else {
+            alert("Kirishda xatolik: " + error.message);
+        }
+        
+        loginBtn.innerText = "Google orqali kirish";
+        loginBtn.disabled = false;
+    }
 });
