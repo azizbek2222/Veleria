@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Veleria - Sozlamalar</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="sozlamalar.css">
+</head>
+<body>
+
+    <div class="settings-screen">
+        <header>
+            <i class="fas fa-arrow-left" id="back-btn"></i>
+            <h2>Sozlamalar</h2>
+        </header>
+
+        <div class="profile-section">
+            <div class="profile-avatar" id="p-avatar">V</div>
+            <h3 id="p-full-name">Yuklanmoqda...</h3>
+            <p id="p-username">@username</p>
+        </div>
+
+        <div class="settings-list">
+            <div class="settings-item">
+                <i class="fas fa-user-edit"></i>
+                <div class="item-text">
+                    <span>Ismni o'zgartirish</span>
+                </div>
+            </div>
+            <div class="settings-item">
+                <i class="fas fa-at"></i>
+                <div class="item-text">
+                    <span>Username o'zgartirish</span>
+                </div>
+            </div>
+            <div class="settings-item">
+                <i class="fas fa-lock"></i>
+                <div class="item-text">
+                    <span>Maxfiylik va xavfsizlik</span>
+                </div>
+            </div>
+            <div class="settings-item" id="logout-settings">
+                <i class="fas fa-sign-out-alt" style="color: #ff5252;"></i>
+                <div class="item-text">
+                    <span style="color: #ff5252;">Chiqish</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="sozlamalar.js"></script>
+</body>
+</html>
