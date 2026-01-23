@@ -1,4 +1,4 @@
-// 1. Firebase Konfiguratsiyasi (Faqat bitta joyda bo'lishi kerak)
+// 1. Firebase Konfiguratsiyasi
 const firebaseConfig = {
   apiKey: "AIzaSyApRt8MNq4YvsjxQVhyQK3p5km8G7Hi9iE",
   authDomain: "webtelegram-9a1d6.firebaseapp.com",
@@ -9,7 +9,6 @@ const firebaseConfig = {
   appId: "1:991268167197:web:fa77f263a3d3a66600b0f4"
 };
 
-// Firebase-ni ishga tushirish
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -19,12 +18,13 @@ const database = firebase.database();
 
 // 2. UI Elementlarni tanlab olish
 const menuIcon = document.getElementById('menu-icon');
+const searchIcon = document.getElementById('search-icon'); // Yangi element
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 const logoutBtn = document.getElementById('logout-btn');
 const tabs = document.querySelectorAll('.tab');
 
-// 3. Sidebar (Yon menyu) funksiyalari
+// 3. Sidebar funksiyalari
 menuIcon.onclick = () => {
     sidebar.classList.add('active');
     overlay.style.display = 'block';
@@ -35,29 +35,31 @@ overlay.onclick = () => {
     overlay.style.display = 'none';
 };
 
-// 4. Foydalanuvchi ma'lumotlarini (Rasm, Ism, Username) Real-time yuklash
+// --- QIDIRUV TUGMASI (LUPA) ---
+if (searchIcon) {
+    searchIcon.onclick = () => {
+        window.location.href = "search.html";
+    };
+}
+
+// 4. Foydalanuvchi ma'lumotlarini Real-time yuklash
 auth.onAuthStateChanged((user) => {
     if (user) {
-        // '.on' ishlatdik - profil o'zgarsa, home sahifasini yangilamasdan rasm o'zgaradi
         database.ref('users/' + user.uid).on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // Ism va Username
                 document.getElementById('user-display-name').innerText = data.firstname + " " + (data.lastname || "");
                 document.getElementById('user-display-username').innerText = "@" + data.username;
                 
                 const avatarCont = document.getElementById('user-avatar-container');
                 const avatarLetter = document.getElementById('user-avatar-letter');
 
-                // RASMNI TEKSHIRISH
                 if (data.profilePic && data.profilePic !== "") {
-                    // Agar rasm bazada bo'lsa
                     avatarCont.style.backgroundImage = `url(${data.profilePic})`;
                     avatarCont.style.backgroundSize = "cover";
                     avatarCont.style.backgroundPosition = "center";
-                    if(avatarLetter) avatarLetter.style.display = 'none'; // Harfni yashirish
+                    if(avatarLetter) avatarLetter.style.display = 'none';
                 } else {
-                    // Agar rasm bo'lmasa, harfni ko'rsatish
                     avatarCont.style.backgroundImage = 'none';
                     if(avatarLetter) {
                         avatarLetter.style.display = 'block';
@@ -67,14 +69,11 @@ auth.onAuthStateChanged((user) => {
             }
         });
     } else {
-        // Foydalanuvchi kirmagan bo'lsa
         window.location.href = "index.html";
     }
 });
 
-// 5. Menyu tugmalari (Yo'naltirishlar)
-
-// Profil sahifasiga (Sidebar 1-chi element)
+// 5. Menyu tugmalari
 const profileBtn = document.querySelector('.menu-item:nth-child(1)');
 if (profileBtn) {
     profileBtn.onclick = () => {
@@ -82,7 +81,6 @@ if (profileBtn) {
     };
 }
 
-// Sozlamalar sahifasiga (Sidebar 2-chi element)
 const settingsBtn = document.querySelector('.menu-item:nth-child(2)');
 if (settingsBtn) {
     settingsBtn.onclick = () => {
@@ -90,7 +88,7 @@ if (settingsBtn) {
     };
 }
 
-// 6. Chat jildlari (Tablar) orasida almashish
+// 6. Chat jildlari
 tabs.forEach(tab => {
     tab.onclick = () => {
         tabs.forEach(t => t.classList.remove('active'));
@@ -98,7 +96,7 @@ tabs.forEach(tab => {
     };
 });
 
-// 7. Chiqish (Logout)
+// 7. Chiqish
 logoutBtn.onclick = () => {
     if (confirm("Akkauntdan chiqishni xohlaysizmi?")) {
         auth.signOut().then(() => {
